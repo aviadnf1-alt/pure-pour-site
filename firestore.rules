@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Admin: the Firebase Auth UID of the site owner (Authentication > Users).
+    function isAdmin() {
+      return request.auth != null && request.auth.uid == 'xjkYtxqwvlQa3lWOwUEgrT4gjbJ3';
+    }
+
+    // Flavors marked "sold out" by the owner. Everyone can read, only the admin can write.
+    match /settings/{docId} {
+      allow read: if true;
+      allow write: if isAdmin() && docId == 'soldOut'
+        && request.resource.data.keys().hasOnly(['slugs'])
+        && request.resource.data.slugs is list
+        && request.resource.data.slugs.size() <= 12;
+    }
+
+    match /orders/{orderId} {
+
+      function validOrder() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['id','createdAt','name','phone','method','area','deliveryFee','subtotal',
+                                 'address','wanted','notes','items','bottles','packs','total','status','ageConfirmed','payApp'])
+          && d.id is string && d.id.matches('PP-[0-9]{4}') && d.id == orderId
+          && d.createdAt == request.time
+          && d.name is string && d.name.size() > 1 && d.name.size() < 80
+          && d.phone is string && d.phone.size() >= 9 && d.phone.size() < 20
+          && d.method in ['pickup', 'delivery']
+          && d.payApp in ['bit', 'paybox']
+          && d.area is string && d.area.size() < 40
+          && d.deliveryFee is number && d.deliveryFee >= 0 && d.deliveryFee <= 50
+          && d.subtotal is number && d.subtotal > 0
+          && d.total == d.subtotal + d.deliveryFee
+          && d.address is string && d.address.size() < 200
+          && d.wanted is string && d.wanted.size() < 60
+          && d.notes is string && d.notes.size() < 500
+          && d.items is list && d.items.size() > 0 && d.items.size() < 13
+          && d.bottles is int && d.bottles >= 1 && d.bottles <= 48
+          && d.packs is map
+          && d.total is number && d.total > 0 && d.total < 5000
+          && d.status == 'pending'
+          && d.ageConfirmed == true;
+      }
+
+      // Anyone may create a new pending order; only the admin can read, update or delete.
+      allow create: if validOrder();
+      allow read, update, delete: if isAdmin();
+    }
+  }
+}

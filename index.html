@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pure Pour | קוקטיילים מוכנים בבקבוק</title>
+<meta name="description" content="12 קוקטיילים מוכנים בבקבוקי 150 מ״ל. לא מסוננים, לא מדוללים – פשוט יוצקים על קרח. הזמנה מראש, תשלום בביט או בפייבוקס.">
+<meta name="theme-color" content="#130A07">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="glass" viewBox="0 0 120 120">
+    <defs>
+      <linearGradient id="liq" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#FF8A5B"/><stop offset="1" stop-color="#E8431C"/>
+      </linearGradient>
+    </defs>
+    <circle cx="60" cy="58" r="52" fill="none" stroke="var(--glass-line, #FFB347)" stroke-width="3"/>
+    <path d="M30 38h60L60 76z" fill="url(#liq)" opacity=".9"/>
+    <path d="M24 28h72L60 76z" fill="none" stroke="var(--glass-line, #FFB347)" stroke-width="4.5" stroke-linejoin="round"/>
+    <path d="M30 35.5h60" stroke="var(--glass-line, #FFB347)" stroke-width="3"/>
+    <path d="M60 76v26M42 102h36" stroke="var(--glass-line, #FFB347)" stroke-width="4.5" stroke-linecap="round"/>
+  </symbol>
+</svg>
+
+<div class="demo-banner" id="demoBanner" hidden>מצב הדגמה – ההזמנות נשמרות רק בדפדפן הזה ולא מגיעות לבעל העסק.</div>
+
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Pure Pour – למעלה">
+      <svg aria-hidden="true"><use href="#glass"/></svg>
+      <span>PURE·POUR</span>
+    </a>
+    <nav class="nav" aria-label="ניווט ראשי">
+      <a class="hide-sm" href="#how">איך זה עובד</a>
+      <a class="hide-sm" href="#menu">התפריט</a>
+      <a class="btn sm" href="#menu">להזמנה</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero-bg">
+  <div class="wrap hero">
+    <svg class="logo" role="img" aria-label="לוגו Pure Pour"><use href="#glass"/></svg>
+    <div class="wordmark">PURE<i>·</i>POUR</div>
+    <h1 class="tagline" dir="ltr">just pure just pour</h1>
+    <p class="lead">קוקטיילים של בר מכל מקום</p>
+    <ul class="facts" aria-label="עובדות עיקריות">
+      <li>150 מ״ל לבקבוק</li>
+      <li id="leadChip">הזמנה מראש</li>
+      <li>דייט · ערב בבית · אירוח</li>
+    </ul>
+    <div class="cta">
+      <a class="btn" href="#menu">בוחרים טעמים</a>
+      <a class="btn ghost" href="#how">איך מזמינים</a>
+    </div>
+  </div>
+  </div>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head"><h2>איך מזמינים</h2></div>
+      <ol class="steps">
+        <li><b>בוחרים טעמים</b><span>בקבוק בודד או חבילות של 2, 4 ו-6. ככל שמזמינים יותר – המחיר לבקבוק יורד.</span></li>
+        <li><b>מקבלים בקשת תשלום</b><span>אחרי ההזמנה נשלח לך בקשת תשלום בביט או בפייבוקס, בסכום המדויק, ונאשר את מועד האספקה בוואטסאפ. ההכנה מתחילה רק אחרי שהתשלום מגיע.</span></li>
+        <li><b>מקבלים ושותים</b><span id="shelfNote">מכינים לפי הזמנה. מומלץ לשמור בקירור ולשתות תוך 3 ימים.</span></li>
+      </ol>
+      <p class="lead-note" data-lead></p>
+    </div>
+  </section>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>התפריט</h2>
+        <p>בוחרים כמה בקבוקים מכל טעם. המחיר לבקבוק יורד אוטומטית לפי הכמות.</p>
+      </div>
+      <div class="packs" id="packs" aria-label="מחירי חבילות"></div>
+      <p class="packs-note" id="packsNote"></p>
+      <div class="grid" id="grid"></div>
+    </div>
+  </section>
+
+  <div class="bar" id="bar" role="region" aria-label="סיכום הזמנה">
+    <div class="wrap">
+      <div>
+        <div class="msg" id="barMsg" aria-live="polite">בחרו לפחות בקבוק אחד</div>
+        <div class="nudge" id="nudge" hidden></div>
+      </div>
+      <a class="btn" href="#checkout" id="barBtn" aria-disabled="true">להמשך ←</a>
+    </div>
+  </div>
+
+  <section id="checkout">
+    <div class="wrap">
+      <div class="sec-head"><h2>פרטי הזמנה</h2></div>
+
+      <form class="panel" id="form" novalidate>
+        <a class="back" href="#menu">→ חזרה לתפריט לעריכת הבחירה</a>
+        <ul class="sum" id="sum" aria-live="polite"></ul>
+
+        <div class="field">
+          <label for="name">שם מלא</label>
+          <input type="text" id="name" name="name" autocomplete="name" maxlength="79" required>
+        </div>
+        <div class="field">
+          <label for="phone">טלפון</label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="050-0000000" maxlength="19" required>
+        </div>
+
+        <fieldset class="field">
+          <legend>איסוף או משלוח</legend>
+          <div class="choices">
+            <label><input type="radio" name="method" value="pickup" checked> איסוף עצמי</label>
+            <label><input type="radio" name="method" value="delivery"> משלוח</label>
+          </div>
+          <span class="hint" id="methodHint"></span>
+        </fieldset>
+
+        <div class="field" id="areaField" hidden>
+          <label for="area">ישוב למשלוח</label>
+          <select id="area" name="area"></select>
+          <span class="hint" id="areaHint"></span>
+        </div>
+        <div class="field" id="addrField" hidden>
+          <label for="address">רחוב ומספר בית</label>
+          <input type="text" id="address" name="address" autocomplete="street-address" maxlength="199">
+        </div>
+        <fieldset class="field" id="dateField">
+          <legend id="dateLegend">למתי אתם צריכים את ההזמנה?</legend>
+          <div class="row2">
+            <input type="date" id="wantedDate" name="wantedDate" aria-label="תאריך" required>
+            <select id="wantedTime" name="wantedTime" aria-label="חלק ביום">
+              <option value="בוקר">בוקר</option>
+              <option value="צהריים">צהריים</option>
+              <option value="אחה״צ" selected>אחה״צ</option>
+              <option value="ערב">ערב</option>
+              <option value="גמיש">גמיש</option>
+            </select>
+          </div>
+          <span class="hint">נאשר את המועד בוואטסאפ, יחד עם בקשת התשלום. אם הוא לא מסתדר, נציע חלופה.</span>
+        </fieldset>
+        <div class="field">
+          <label for="notes">הערות (לא חובה)</label>
+          <textarea id="notes" name="notes" maxlength="499" placeholder="בקשה מיוחדת, אירוע, שעה מדויקת…"></textarea>
+        </div>
+
+        <fieldset class="field">
+          <legend>איפה נוח לך לקבל בקשת תשלום?</legend>
+          <div class="choices">
+            <label><input type="radio" name="payApp" value="bit" checked> ביט</label>
+            <label><input type="radio" name="payApp" value="paybox"> פייבוקס</label>
+          </div>
+          <span class="hint">נשלח את הבקשה למספר הטלפון שמילאת למעלה.</span>
+        </fieldset>
+
+        <label class="check">
+          <input type="checkbox" id="age" name="age" required>
+          <span>אני בן/בת 18 ומעלה, והמוצר מיועד למבוגרים בלבד. קראתי את <a href="terms.html" target="_blank" rel="noopener" style="color:var(--amber)">התקנון ומדיניות הפרטיות</a>.</span>
+        </label>
+
+        <p class="lead-note" data-lead></p>
+        <p class="err" id="err" role="alert"></p>
+        <button class="btn" type="submit" id="submit" style="width:100%" disabled>שליחת הזמנה</button>
+        <p class="hint" style="margin-top:10px">אחרי השליחה נשלח לך בקשת תשלום בביט או בפייבוקס. ההכנה מתחילה לאחר אישור התשלום.</p>
+      </form>
+
+      <div class="panel done" id="done" hidden tabindex="-1">
+        <h2>ההזמנה התקבלה</h2>
+        <p>מספר הזמנה – כתבו אותו בתשלום:</p>
+        <div class="oid" id="oid">PP-0000</div>
+        <h3 style="margin-top:14px">פירוט ההזמנה</h3>
+        <ul class="sum" id="doneSum"></ul>
+        <p>סכום לתשלום: <span class="bigsum" id="doneTotal"></span></p>
+        <h3>מה קורה עכשיו</h3>
+        <ol class="todo">
+          <li>נשלח לך <b>בקשת תשלום ב<span id="donePayApp">ביט</span></b> בסכום המדויק, למספר <span id="donePhone" dir="ltr"></span>.</li>
+          <li>מאשרים את הבקשה באפליקציה.</li>
+          <li>כשנראה את התשלום נשלח לך אישור בוואטסאפ, ורק אז מתחילים להכין ומתאמים איתך <span id="doneHow">איסוף או משלוח</span>.</li>
+        </ol>
+        <a class="btn" id="waBtn" href="#" target="_blank" rel="noopener" style="width:100%">יש שאלה? כתבו לנו בוואטסאפ</a>
+        <p class="hint" id="doneNote" style="margin-top:10px"></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="links">
+      <a id="waLink" href="#" target="_blank" rel="noopener">וואטסאפ <span id="phoneTxt" dir="ltr"></span></a>
+      <a id="igLink" href="#" target="_blank" rel="noopener">אינסטגרם</a>
+      <a id="ttLink" href="#" target="_blank" rel="noopener">טיקטוק</a>
+    </div>
+    <div>אלכוהול – לבני 18 ומעלה בלבד. שתו באחריות. · <a href="terms.html">תקנון ומדיניות פרטיות</a></div>
+    <div style="margin-top:6px">© Pure Pour</div>
+  </div>
+</footer>
+
+<script type="module" src="js/site.js"></script>
+</body>
+</html>
