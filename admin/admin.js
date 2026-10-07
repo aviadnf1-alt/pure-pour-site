@@ -1,6 +1,6 @@
-import { fmt } from '../js/pricing.js';
-import { COCKTAILS } from '../js/data.js';
-import { initStore, onAuth, login, logout, listenOrders, updateOrder, getSoldOut, setSoldOut } from '../js/store.js';
+import { fmt } from '../js/pricing.js?v=20261008b';
+import { COCKTAILS } from '../js/data.js?v=20261008b';
+import { initStore, onAuth, login, logout, listenOrders, updateOrder, getSoldOut, setSoldOut } from '../js/store.js?v=20261008b';
 
 const $ = id => document.getElementById(id);
 const STATUS = {
