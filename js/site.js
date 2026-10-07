@@ -70,11 +70,12 @@ function renderStatic() {
     CONFIG.delivery.zones.map((z, i) => `<option value="${i}">${z.name} – ${z.fee} ₪</option>`).join('') +
     `<option value="other">${CONFIG.delivery.otherZoneLabel}</option>`;
 
-  // תאריך מבוקש: מהמחר ועד 60 יום קדימה (מזמינים עד ערב לפני האספקה)
+  // תאריך מבוקש: מהיום ועד 60 יום קדימה. הזמנה ליום עצמו מאושרת ידנית בוואטסאפ.
   const iso = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-  const t0 = new Date(); const min = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate() + 1);
+  const t0 = new Date(); const min = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate());
   const max = new Date(t0.getFullYear(), t0.getMonth(), t0.getDate() + 60);
   $('wantedDate').min = iso(min); $('wantedDate').max = iso(max);
+  $('wantedDate').addEventListener('input', () => { $('sameDayNote').hidden = $('wantedDate').value !== iso(min); });
   updateMethod();
 }
 
@@ -212,7 +213,7 @@ $('form').addEventListener('submit', async e => {
   }
   const wd = $('wantedDate').value;
   if (!wd) { err.textContent = 'נא לבחור תאריך מבוקש.'; $('wantedDate').focus(); return; }
-  if (wd < $('wantedDate').min || wd > $('wantedDate').max) { err.textContent = 'אפשר להזמין מהמחר ועד 60 יום קדימה.'; $('wantedDate').focus(); return; }
+  if (wd < $('wantedDate').min || wd > $('wantedDate').max) { err.textContent = 'אפשר לבחור תאריך מהיום ועד 60 יום קדימה.'; $('wantedDate').focus(); return; }
   if (!$('age').checked) { err.textContent = 'יש לאשר שאתם בני 18 ומעלה.'; $('age').focus(); return; }
   const [wy, wm, wdd] = wd.split('-').map(Number);
   const dayName = new Date(wy, wm - 1, wdd).toLocaleDateString('he-IL', { weekday: 'long' });
