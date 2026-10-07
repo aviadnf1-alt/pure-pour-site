@@ -1,5 +1,5 @@
 // שכבת אחסון: Firebase כשמוגדר ב-config.js, אחרת מצב הדגמה (localStorage בדפדפן).
-import { CONFIG } from './config.js';
+import { CONFIG } from './config.js?v=20261008b';
 
 const FB_VER = '10.12.2';
 const LS_KEY = 'pp_demo_orders_v1';

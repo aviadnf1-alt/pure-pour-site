@@ -1,7 +1,7 @@
-import { CONFIG } from './config.js';
-import { COCKTAILS } from './data.js';
-import { tierPrice, fmt } from './pricing.js';
-import { initStore, createOrder, storeMode, getSoldOut } from './store.js';
+import { CONFIG } from './config.js?v=20261008b';
+import { COCKTAILS } from './data.js?v=20261008b';
+import { tierPrice, fmt } from './pricing.js?v=20261008b';
+import { initStore, createOrder, storeMode, getSoldOut } from './store.js?v=20261008b';
 
 const $ = id => document.getElementById(id);
 const qty = Object.fromEntries(COCKTAILS.map(c => [c.slug, 0]));
