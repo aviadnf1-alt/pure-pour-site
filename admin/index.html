@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Pure Pour | ניהול הזמנות</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@500;700&family=Heebo:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/style.css">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="demo-banner" id="demoBanner" hidden>מצב הדגמה – מוצגות רק הזמנות שנשמרו בדפדפן הזה. כדי לראות הזמנות אמיתיות צריך לחבר Firebase (SETUP-HE.md).</div>
+
+<main class="wrap" style="padding-top:20px;padding-bottom:60px">
+
+  <!-- התחברות -->
+  <section id="login" class="panel" hidden style="margin-top:40px">
+    <h2 style="margin-bottom:14px">כניסת מנהל</h2>
+    <form id="loginForm">
+      <div class="field"><label for="email">אימייל</label><input type="email" id="email" autocomplete="username" dir="ltr"></div>
+      <div class="field"><label for="pw">סיסמה</label><input type="password" id="pw" autocomplete="current-password" dir="ltr"></div>
+      <p class="err" id="loginErr" role="alert"></p>
+      <button class="btn" type="submit" style="width:100%">כניסה</button>
+    </form>
+  </section>
+
+  <!-- דשבורד -->
+  <section id="app" hidden>
+    <header class="ahead">
+      <h1>ניהול הזמנות</h1>
+      <div class="ahead-actions">
+        <button class="btn sm ghost" id="csv" type="button">ייצוא CSV</button>
+        <button class="btn sm ghost" id="logout" type="button">יציאה</button>
+      </div>
+    </header>
+
+    <div class="stats" id="stats"></div>
+
+    <div class="toolbar">
+      <input type="text" id="q" placeholder="חיפוש לפי שם, טלפון או מספר הזמנה" aria-label="חיפוש">
+      <select id="fStatus" aria-label="סטטוס">
+        <option value="">כל הסטטוסים</option>
+      </select>
+      <select id="fRange" aria-label="טווח זמן">
+        <option value="all">כל הזמן</option>
+        <option value="7">7 ימים אחרונים</option>
+        <option value="30">30 ימים אחרונים</option>
+      </select>
+    </div>
+
+    <details class="prod" id="prod" open>
+      <summary>רשימת הכנה – בקבוקים להכין לפי טעם</summary>
+      <p class="hint">מחושב מהזמנות ששולמו ועוד לא הוכנו (סטטוס "שולם").</p>
+      <div id="prodList"></div>
+    </details>
+
+    <details class="prod" id="stock">
+      <summary>זמינות טעמים – לחיצה מסמנת "אזל זמנית" באתר</summary>
+      <p class="hint">טעם שמסומן "אזל" מופיע באתר כלא זמין ולא ניתן להזמין אותו. החזרה ל"זמין" באותה לחיצה.</p>
+      <div id="stockList" class="stock"></div>
+      <p class="hint" id="stockMsg" role="status"></p>
+    </details>
+
+    <p class="err" id="listErr" role="alert"></p>
+    <div id="orders" class="orders"></div>
+  </section>
+</main>
+
+<script type="module" src="admin.js"></script>
+</body>
+</html>
