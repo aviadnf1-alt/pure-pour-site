@@ -1,5 +1,5 @@
 // שכבת אחסון: Firebase כשמוגדר ב-config.js, אחרת מצב הדגמה (localStorage בדפדפן).
-import { CONFIG } from './config.js?v=20261008b';
+import { CONFIG } from './config.js?v=20261010a';
 
 const FB_VER = '10.12.2';
 const LS_KEY = 'pp_demo_orders_v1';
@@ -115,6 +115,16 @@ export function listenOrders(cb, onError) {
   window.addEventListener('storage', onStorage);
   push();
   return () => window.removeEventListener('storage', onStorage);
+}
+
+// מחיקה סופית של הזמנה (רק מנהל, לפי כללי Firestore). בעמוד הניהול נקראת רק אחרי אישור מפורש.
+export async function deleteOrder(id) {
+  if (mode === 'firebase') {
+    const { db, fs } = fb;
+    return fs.deleteDoc(fs.doc(db, 'orders', id));
+  }
+  writeLocal(readLocal().filter(o => o.id !== id));
+  window.dispatchEvent(new StorageEvent('storage', { key: LS_KEY }));
 }
 
 export async function updateOrder(id, patch) {
