@@ -35,6 +35,8 @@
 .badge { display: inline-block; border-radius: 999px; padding: 2px 12px; font-size: .85rem; font-weight: 600; background: var(--st, #999); color: #fff; }
 .payreq { background: var(--card-2); border: 1px dashed var(--amber); border-radius: 10px; padding: 8px 12px; margin: 8px 0; display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; }
 .ord-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+.btn.danger { background: #A8321F; color: #fff; border-color: #A8321F; }
+.bulk { margin: 0 0 12px; }
 .empty { text-align: center; color: var(--muted); padding: 30px 0; }
 
 [data-st="pending"]   { --st: #B07A00; }

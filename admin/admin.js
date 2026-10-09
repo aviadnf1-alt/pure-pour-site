@@ -1,6 +1,6 @@
-import { fmt } from '../js/pricing.js?v=20261008b';
-import { COCKTAILS } from '../js/data.js?v=20261008b';
-import { initStore, onAuth, login, logout, listenOrders, updateOrder, getSoldOut, setSoldOut } from '../js/store.js?v=20261008b';
+import { fmt } from '../js/pricing.js?v=20261010a';
+import { COCKTAILS } from '../js/data.js?v=20261010a';
+import { initStore, onAuth, login, logout, listenOrders, updateOrder, deleteOrder, getSoldOut, setSoldOut } from '../js/store.js?v=20261010a';
 
 const $ = id => document.getElementById(id);
 const STATUS = {
@@ -83,6 +83,10 @@ function render() {
     : '<p class="hint">אין כרגע הזמנות ששולמו וממתינות להכנה.</p>';
 
   $('orders').innerHTML = list.length ? list.map(card).join('') : '<p class="empty">אין הזמנות להצגה.</p>';
+
+  const nCancelled = orders.filter(o => o.status === 'cancelled').length;
+  $('bulk').hidden = nCancelled === 0;
+  $('delAll').textContent = `מחיקת כל ההזמנות המבוטלות (${nCancelled})`;
 }
 
 function card(o) {
@@ -105,9 +109,30 @@ function card(o) {
       ל-<span dir="ltr">${esc(o.phone)}</span> בסכום <b>${fmt(o.total)}</b> · מועד מבוקש: <b>${esc(o.wanted)}</b>
       <button class="btn sm ghost" data-copy="${esc(o.phone)}" type="button">העתק טלפון</button>
       <button class="btn sm ghost" data-copy="${o.total}" type="button">העתק סכום</button></div>` : ''}
-    <div class="ord-actions">${actions}<a class="btn sm ghost" href="${wa}" target="_blank" rel="noopener">וואטסאפ ללקוח</a></div>
+    <div class="ord-actions">${actions}<a class="btn sm ghost" href="${wa}" target="_blank" rel="noopener">וואטסאפ ללקוח</a>${o.status === 'cancelled' ? `<button class="btn sm danger" data-del="${esc(o.id)}" type="button">מחיקה לצמיתות</button>` : ''}</div>
   </article>`;
 }
+
+// מחיקה סופית: רק הזמנות מבוטלות, ורק אחרי אישור. את הלחיצה מבצע בעל העסק.
+$('orders').addEventListener('click', async e => {
+  const del = e.target.closest('button[data-del]');
+  if (!del) return;
+  const id = del.dataset.del;
+  if (!confirm(`למחוק לצמיתות את ההזמנה ${id}? אי אפשר לשחזר.`)) return;
+  del.disabled = true;
+  try { await deleteOrder(id); }
+  catch (ex) { console.error(ex); $('listErr').textContent = 'המחיקה נכשלה. נסה שוב.'; del.disabled = false; }
+});
+
+$('delAll').addEventListener('click', async () => {
+  const cancelled = orders.filter(o => o.status === 'cancelled');
+  if (!cancelled.length) return;
+  if (!confirm(`למחוק לצמיתות את כל ${cancelled.length} ההזמנות המבוטלות? אי אפשר לשחזר.`)) return;
+  $('delAll').disabled = true;
+  try { for (const o of cancelled) await deleteOrder(o.id); }
+  catch (ex) { console.error(ex); $('listErr').textContent = 'המחיקה נכשלה באמצע. נסה שוב.'; }
+  $('delAll').disabled = false;
+});
 
 $('orders').addEventListener('click', async e => {
   const cp = e.target.closest('button[data-copy]');
